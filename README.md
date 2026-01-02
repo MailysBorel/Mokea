@@ -1,59 +1,34 @@
-# Mokea
+# Mokéa - Sushi E-Commerce
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+Bienvenue sur le projet **Mokéa**. Voici comment lancer le projet sur votre machine.
 
-## Development server
+## 1. Pré-requis
+Assurez-vous d'avoir **Node.js** installé sur votre ordinateur.
+Vous pouvez vérifier en tapant cette commande dans votre terminal :
+```bash
+node -v
+```
 
-To start a local development server, run:
+## 2. Installation
+Ouvrez ce dossier dans votre terminal (ou Visual Studio Code) et installez les dépendances :
+```bash
+npm install
+```
 
+## 3. Lancer le site
+Une fois l'installation finie, lancez le serveur de développement :
 ```bash
 ng serve
 ```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+Ou si cela ne marche pas :
 ```bash
-ng generate component component-name
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Ensuite, ouvrez votre navigateur à l'adresse **`http://localhost:4200/`**.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Fonctionnement (Sans Backend)
+Le site est configuré en **"Mode Simulation"** pour la partie connexion/inscription.
+- Vous n'avez **pas besoin de lancer de serveur PHP/MySQL** pour voir le frontend fonctionner.
+- Pour tester le login, vous pouvez utiliser n'importe quel email (ex: `test@test.com`).
+- Le site affichera les sushis et pages normalement grâce aux données de test incluses.

@@ -67,7 +67,7 @@ import { HeaderComponent } from '../../components/header/header.component';
   `,
     styles: [`
     /* Reuse styles from LoginComponent via encapsulation or Global if preferred. 
-       For now, repeating critical block for self-containment 
+      For now, repeating critical block for self-containment 
     */
     .auth-container {
       min-height: calc(100vh - 80px);

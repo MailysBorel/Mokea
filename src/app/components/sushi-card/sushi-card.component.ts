@@ -132,7 +132,7 @@ export class SushiCardComponent {
   constructor(private cartService: CartService) { }
 
   onAdd(event: Event) {
-    event.stopPropagation(); // Prevent card click if we add detail view later
+    event.stopPropagation(); 
     this.cartService.add(this.box);
   }
 }

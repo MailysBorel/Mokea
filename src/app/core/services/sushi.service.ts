@@ -8,10 +8,13 @@ import { SushiBox } from '../../shared/models/sushi-box.model';
     providedIn: 'root'
 })
 export class SushiService {
-    // Use 127.0.0.1 to avoid DNS resolution delays
+    /**
+     * URL de l'API PHP pour récupérer les boîtes.
+     * On utilise 127.0.0.1 pour être plus rapide sous Windows.
+     */
     private apiUrl = 'http://127.0.0.1/sae301/api/boxes/index.php';
 
-    // Fallback data if API fails
+
     private mockBoxes: SushiBox[] = [
         {
             id: 1,
@@ -219,19 +222,30 @@ export class SushiService {
 
     constructor(private http: HttpClient) { }
 
+    /**
+     * Récupère la liste des boîtes de sushis.
+     * après 1 seconde ou en cas d'erreur.
+     */
     getBoxes(): Observable<SushiBox[]> {
         return this.http.get<any[]>(this.apiUrl).pipe(
-            timeout(1000),
+            timeout(1000), // Si pas de réponse en 1sec, on annule
+
+            // L'API renvoie des noms en français (nom, prix, saveurs...)
+            // Notre site utilise l'anglais (name, price, flavors...)
+            // On fait donc la conversion ici pour que tout le reste du site soit propre.
             map(apiBoxes => apiBoxes.map(b => ({
                 id: b.id,
                 name: b.nom,
                 pieces: b.pieces,
                 price: b.prix,
-                image: this.resolveImage(b.image),
+                image: this.resolveImage(b.image), // On choisit la bonne image locale
                 description: b.description || 'Une délicieuse box de sushis fraichement préparés.',
                 flavors: b.saveurs || [],
                 foods: b.aliments ? b.aliments.map((a: any) => ({ nom: a.nom, quantite: a.quantite })) : []
             }))),
+
+            // GESTION D'ERREUR
+            // Si l'API plante, on renvoie les données de test (this.mockBoxes)
             catchError(error => {
                 // console.warn('API connection failed or timed out, using mock data:', error);
                 return of(this.mockBoxes);
@@ -239,20 +253,26 @@ export class SushiService {
         );
     }
 
+    /**
+     * Choisit l'image à afficher en fonction du nom de l'image reçu de l'API.
+     */
     private resolveImage(apiImage: string): string {
-        // Map API image slugs to local assets
         if (!apiImage) return 'assets/images/logo_blanc.png';
 
+        // Si le nom contient 'tasty', 'mix', etc -> Image Tasty Blend
         if (apiImage.includes('tasty-blend') || apiImage.includes('amateur-mix') || apiImage.includes('master-mix') || apiImage.includes('sunrise') || apiImage.includes('chicken') || apiImage.includes('california-dream') || apiImage.includes('gourmet')) {
             return 'assets/images/tastyblend.jpg';
         }
+        // Si ça parle de saumon -> Image Saumon
         if (apiImage.includes('saumon') || apiImage.includes('salmon')) {
             return 'assets/images/amour_saumon.png';
         }
+        // Si c'est veggie -> Image Veggie
         if (apiImage.includes('veggie') || apiImage.includes('fresh')) {
             return 'assets/images/veggie_box.png';
         }
 
+        // Image par défaut si rien ne correspond
         return 'assets/images/logo_blanc.png';
     }
 

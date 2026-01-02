@@ -13,16 +13,18 @@ import { map } from 'rxjs/operators';
   template: `
     <header class="header">
       <div class="container header-content">
+
         <!-- Logo -->
+
         <a routerLink="/" class="logo">
           <img src="assets/images/logo_blanc.png" alt="Mokéa" class="logo-img">
         </a>
 
 
         <!-- User Actions -->
+
         <div class="user-actions">
           <ng-container *ngIf="currentUser$ | async as user; else guestTemplate">
-            <span class="welcome-text">Bonjour, {{ user.firstname }}</span>
              <a (click)="logout()" class="action-link" style="cursor: pointer;">
               Déconnexion
             </a>
@@ -98,6 +100,7 @@ import { map } from 'rxjs/operators';
     }
 
     /* User Actions */
+
     .user-actions {
       display: flex;
       align-items: center;
@@ -155,16 +158,13 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser$ = this.authService.currentUser$;
-    // Let's do a simple map here or use a helper in service. 
-    // To be clean, let's assume I'll add a proper observable in service or map here.
-    // Ideally CartService exposes count$. Let's modify CartService to make this easier or map here.
+    
 
     this.cartCount$ = this.cartService.items$.pipe(
-      // Avoid importing 'map' if not needed, but we must.
-      // Actually let's use a simple approach: update cart service to expose count$
-    ) as any; // Temporary fix, let me fix CartService first or do the map properly.
+      
+    ) as any; 
 
-    // Better implementation:
+    
     this.cartCount$ = this.cartService.items$.pipe(
       map(items => items.reduce((acc, item) => acc + item.quantity, 0))
     );

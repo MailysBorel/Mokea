@@ -8,7 +8,7 @@ export interface User {
     email: string;
     firstname: string;
     lastname: string;
-    // Add other fields as needed
+    address?: string;
 }
 
 export interface AuthResponse {
@@ -20,7 +20,7 @@ export interface AuthResponse {
     providedIn: 'root'
 })
 export class AuthService {
-    // Updated API URL to use 127.0.0.1 for better performance on Windows
+    // API URL pointing to the local PHP server
     private apiUrl = 'http://127.0.0.1/sae301/api/auth';
 
     private currentUserSubject = new BehaviorSubject<User | null>(null);
@@ -38,41 +38,13 @@ export class AuthService {
     }
 
     login(email: string, password: string): Observable<AuthResponse> {
-        // REAL API CALL (Server is offline)
-        // return this.http.post<AuthResponse>(`${this.apiUrl}/login.php`, { email, password })
-        //     .pipe(tap(response => this.handleAuth(response)));
-
-        // MOCK LOGIN for demonstration if API is not running
-        return new Observable(observer => {
-            setTimeout(() => {
-                const mockResponse: AuthResponse = {
-                    token: 'fake-jwt-token',
-                    user: { id: 1, email, firstname: 'John', lastname: 'Doe' }
-                };
-                this.handleAuth(mockResponse);
-                observer.next(mockResponse);
-                observer.complete();
-            }, 1000);
-        });
+        return this.http.post<AuthResponse>(`${this.apiUrl}/login.php`, { email, password })
+            .pipe(tap(response => this.handleAuth(response)));
     }
 
     register(data: any): Observable<AuthResponse> {
-        // REAL API CALL (Server is offline)
-        // return this.http.post<AuthResponse>(`${this.apiUrl}/register.php`, data)
-        //     .pipe(tap(response => this.handleAuth(response)));
-
-        // MOCK REGISTER
-        return new Observable(observer => {
-            setTimeout(() => {
-                const mockResponse: AuthResponse = {
-                    token: 'fake-jwt-token',
-                    user: { id: 1, ...data }
-                };
-                this.handleAuth(mockResponse);
-                observer.next(mockResponse);
-                observer.complete();
-            }, 1000);
-        });
+        return this.http.post<AuthResponse>(`${this.apiUrl}/register.php`, data)
+            .pipe(tap(response => this.handleAuth(response)));
     }
 
     logout() {
